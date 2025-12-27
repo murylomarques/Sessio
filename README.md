@@ -281,7 +281,7 @@ O que medir para saber se o negócio é real ou apenas um projeto de hobby.
 ## 📚 Referências
 
 [1]: Better Business Bureau. *Complaints - SimplePractice LLC*.
-[2]: Reddit. *I can't stand SimplePractice : r/therapists*.
+[2]: Reddit. *I can't stand SimplePractice : r/therapists*. 
 [3]: G2. *SimplePractice Pros and Cons | User Likes & Dislikes*.
 [4]: 314e. *10 Biggest Challenges With EHR Data Migration*.
 [5]: Sessio. *O Diferencial Competitivo (A "Fosso")*. (Contexto do Projeto)

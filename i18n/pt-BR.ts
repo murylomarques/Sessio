@@ -1,6 +1,7 @@
-// /i18n/pt-BR.ts - VERSÃO FINAL
+// /i18n/pt-BR.ts - VERSÃO FINAL E CORRIGIDA
 
 const ptBR = {
+  // --- MARKETING / LANDING PAGE ---
   header: {
     login: "Entrar",
     cta: "Começar Teste Grátis",
@@ -45,29 +46,16 @@ const ptBR = {
     old_way: {
       title: "O software complicado",
       price: "R$499/mês",
-      features: [
-        "Funções de convênio que você não usa",
-        "Limite de clientes no plano básico",
-        "Suporte lento e burocrático",
-        "Curva de aprendizado longa",
-      ],
+      features: [ "Funções de convênio que você não usa", "Limite de clientes no plano básico", "Suporte lento e burocrático", "Curva de aprendizado longa" ],
     },
     new_way: {
       title: "Sessio: O Essencial",
       price_month: "R$59",
       price_year: "R$590",
       billed_annually: "Cobrado anualmente",
-      features: [
-        "Pacientes ilimitados",
-        "Notas de prontuário ilimitadas",
-        "Agendamento online",
-        "Cobrança via link de pagamento",
-        "Importador de dados",
-        "Suporte direto com os fundadores",
-      ],
+      features: [ "Pacientes ilimitados", "Notas de prontuário ilimitadas", "Agendamento online", "Cobrança via link de pagamento", "Importador de dados", "Suporte direto com os fundadores" ],
     },
   },
-  // Adicionar esta seção ao seu /i18n/pt-BR.ts
   cta: {
     title: "Recupere seu tempo. Foque no que importa.",
     subtitle: "Menos tempo com burocracia, mais tempo com seus pacientes.",
@@ -76,7 +64,6 @@ const ptBR = {
     testimonial_role: "Psicoterapeuta, cliente desde 2025",
     button_text: "Começar meu teste grátis",
   },
-  // Adicionar esta seção ao seu /i18n/pt-BR.ts
   footer: {
     tagline: "O EHR essencial para terapeutas solo. Menos burocracia, mais foco na sessão.",
     product_title: "Produto",
@@ -90,7 +77,8 @@ const ptBR = {
     privacy: "Política de Privacidade",
     copyright: "Todos os direitos reservados.",
   },
-  // Adicionar esta seção ao seu /i18n/pt-BR.ts
+
+  // --- FLUXO DE AUTENTICAÇÃO E ONBOARDING ---
   signup: {
     title: "Crie sua conta grátis",
     subtitle: "Comece seu teste de 7 dias. Não pedimos cartão de crédito.",
@@ -103,6 +91,96 @@ const ptBR = {
     login_prompt: "Já tem uma conta?",
     login_link: "Entrar",
   },
+  verify: {
+    title: "Confirme seu e-mail",
+    subtitle: "Enviamos um link de confirmação para o seu endereço de e-mail. Por favor, clique no link para ativar sua conta.",
+    spam_check: "Não se esqueça de verificar sua caixa de spam.",
+  },
+  onboarding: {
+    title: "Bem-vindo(a) ao Sessio!",
+    subtitle: "Vamos começar. Como você prefere configurar sua conta?",
+    import_title: "Importar dados existentes",
+    import_desc: "Traga seus pacientes e prontuários de outro sistema. É rápido e seguro.",
+    manual_title: "Começar do zero",
+    manual_desc: "Adicione seu primeiro paciente manualmente em segundos.",
+  },
+  import: {
+    title: "Importe seus dados",
+    subtitle: "Exporte seus pacientes como um arquivo CSV do seu sistema antigo e envie aqui.",
+    upload_cta: "Clique para enviar um arquivo",
+    upload_subtext: "ou arraste e solte o CSV aqui",
+    processing_title: "Processando seus dados...",
+    processing_desc: "Estamos importando o arquivo {fileName}. Isso pode levar alguns instantes.",
+    success_title: "Importação concluída!",
+    success_desc: "{count} pacientes foram importados com sucesso. Redirecionando...",
+    error_title: "Ocorreu um erro",
+    error_details_placeholder: "O formato do arquivo CSV parece ser inválido. Por favor, verifique se é o arquivo correto e tente novamente.",
+  },
+
+  // --- DENTRO DA APLICAÇÃO ---
+  patients: {
+    title: "Seus Pacientes",
+    subtitle: "Veja, busque e gerencie todos os seus pacientes em um só lugar.",
+    add_patient_button: "Adicionar Paciente",
+    table_header_name: "Nome",
+    table_header_email: "Email",
+    table_header_status: "Status",
+    table_action_view: "Ver Prontuário",
+    status_active: "Ativo",
+    status_archived: "Arquivado",
+    empty_state_title: "Nenhum paciente encontrado",
+    empty_state_subtitle: "Que tal adicionar o primeiro?",
+    error_loading: "Ocorreu um erro ao carregar os pacientes. Tente novamente mais tarde."
+  },
+  patientDetail: {
+    email_fallback: "Sem email",
+    phone_fallback: "Sem telefone",
+    edit_button: "Editar",
+    add_note_button: "Adicionar Nova Nota",
+    history_title: "Histórico de Sessões",
+    view_edit_note_link: "Ver/Editar Nota",
+    empty_state_title: "Nenhuma nota clínica encontrada",
+    empty_state_subtitle: "Clique em 'Adicionar Nova Nota' para criar a primeira sessão deste paciente."
+  },
+  noteDetail: {
+    back_link: "Voltar para o prontuário de {patientName}",
+    title: "Nota de Sessão",
+    edit_button: "Editar",
+    content_fallback: "O conteúdo desta nota está vazio."
+  },
+  newPatientForm: {
+    title: "Adicionar Novo Paciente",
+    subtitle: "Preencha as informações abaixo para criar um novo prontuário.",
+    name_label: "Nome Completo",
+    email_label: "Email",
+    phone_label: "Telefone",
+    cancel_button: "Cancelar",
+    save_button: "Salvar Paciente",
+    saving_button: "Salvando..."
+  },
+  editPatientForm: {
+    title: "Editar Paciente",
+    subtitle: "Atualize as informações do prontuário de {patientName}.",
+    cancel_button: "Cancelar",
+    save_button: "Salvar Alterações",
+    saving_button: "Salvando..."
+  },
+  newNoteForm: {
+    title: "Nova Nota de Sessão",
+    subtitle: "Descreva os detalhes da sessão. Suas anotações são salvas com segurança.",
+    content_label: "Conteúdo da Nota",
+    placeholder: "Comece a escrever aqui...",
+    cancel_button: "Cancelar",
+    save_button: "Salvar Nota",
+    saving_button: "Salvando..."
+  },
+  editNoteForm: {
+    title: "Editar Nota de Sessão",
+    subtitle: "Faça as alterações necessárias no conteúdo da nota abaixo.",
+    cancel_button: "Cancelar",
+    save_button: "Salvar Alterações",
+    saving_button: "Salvando..."
+  }
 };
 
 export default ptBR;
