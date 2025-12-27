@@ -38,7 +38,7 @@ export default function OnboardingPage() {
         </Link>
         
         {/* Card 2: Começar do Zero (Ação Secundária) */}
-        <Link href="/patients/new" className="group block rounded-xl border border-neutral-200 bg-white p-6 text-left transition hover:border-neutral-400 hover:shadow-lg">
+        <Link href="/app/patients/new" className="group block rounded-xl border border-neutral-200 bg-white p-6 text-left transition hover:border-neutral-400 hover:shadow-lg">
           <UserPlusIcon className="h-8 w-8 text-neutral-500" />
           <h3 className="mt-3 text-lg font-semibold text-neutral-900">
             {t.onboarding.manual_title}

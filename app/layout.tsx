@@ -10,8 +10,8 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning>
-      <body>
-        <AuthListener /> {/* Verifique se o componente está aqui. */}
+      <body className="min-h-screen bg-neutral-100 text-neutral-900 antialiased">
+        <AuthListener />
         {children}
       </body>
     </html>

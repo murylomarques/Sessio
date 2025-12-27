@@ -175,3 +175,59 @@ export async function updateClinicalNote(prevState: any, formData: FormData) {
   revalidatePath(`/app/patients/${patientId}/notes/${noteId}`);
   return { success: true, error: null, patientId: patientId, noteId: noteId };
 }
+
+export async function updateProfile(prevState: any, formData: FormData) {
+  const fullName = formData.get('fullName') as string;
+  const licenseNumber = formData.get('licenseNumber') as string;
+
+  if (!fullName || fullName.trim().length === 0) {
+    return { success: false, error: "O nome completo é obrigatório." };
+  }
+
+  const supabase = createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) { return { success: false, error: "Usuário não autenticado." }; }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ 
+      full_name: fullName, 
+      license_number: licenseNumber || null 
+    })
+    .eq('id', user.id);
+  
+  if (error) {
+    console.error("Erro ao atualizar perfil:", error);
+    return { success: false, error: "Não foi possível atualizar o perfil." };
+  }
+  
+  revalidatePath('/app/settings');
+  return { success: true, error: null, message: "Perfil atualizado com sucesso!" };
+}
+
+// --- SERVER ACTION 7: CRIAR LINK DO PORTAL STRIPE ---
+export async function createStripePortalLink() {
+  const supabase = createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) { throw new Error("Usuário não autenticado."); }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('stripe_customer_id')
+    .eq('id', user.id)
+    .single();
+  
+  if (!profile?.stripe_customer_id) {
+    throw new Error("Cliente Stripe não encontrado.");
+  }
+
+  // A configuração do Stripe (lib/stripe.ts) e as variáveis de ambiente são pré-requisitos
+  const { stripe } = await import('@/lib/stripe');
+  
+  const { url } = await stripe.billingPortal.sessions.create({
+    customer: profile.stripe_customer_id,
+    return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/app/dashboard`,
+  });
+
+  redirect(url);
+}

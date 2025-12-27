@@ -130,6 +130,7 @@ const ptBR = {
     status_archived: "Arquivado",
     empty_state_title: "Nenhum paciente encontrado",
     empty_state_subtitle: "Que tal adicionar o primeiro?",
+    import_button: "Importar",
     error_loading: "Ocorreu um erro ao carregar os pacientes. Tente novamente mais tarde."
   },
   patientDetail: {
@@ -140,6 +141,7 @@ const ptBR = {
     history_title: "Histórico de Sessões",
     view_edit_note_link: "Ver/Editar Nota",
     empty_state_title: "Nenhuma nota clínica encontrada",
+    loading: "Carregando pacientes...",
     empty_state_subtitle: "Clique em 'Adicionar Nova Nota' para criar a primeira sessão deste paciente."
   },
   noteDetail: {
@@ -180,7 +182,18 @@ const ptBR = {
     cancel_button: "Cancelar",
     save_button: "Salvar Alterações",
     saving_button: "Salvando..."
-  }
+  },
+    dashboard: {
+    title: "Dashboard",
+    subtitle: "Seu resumo do dia.",
+    today_schedule: "Agenda de Hoje",
+    no_appointments: "Você não tem sessões agendadas para hoje.",
+    status_scheduled: "Agendado",
+    pending_payments: "Pagamentos Pendentes",
+    no_pending_payments: "Nenhum pagamento pendente. Ótimo trabalho!",
+    charge: "Gerar Cobrança",
+  },
+
 };
 
 export default ptBR;

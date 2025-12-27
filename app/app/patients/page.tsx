@@ -1,30 +1,73 @@
-// /app/app/patients/page.tsx - USANDO O PADRÃO DE SERVIDOR
+// /app/app/patients/page.tsx - VERSÃO FINAL COM BOTÃO DE IMPORTAR
 
-import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { getDictionary } from '@/lib/i18n/getDictionary'; // Agora o import funciona
-import Link from 'next/link';
+"use client";
+
+import { useState, useEffect } from 'react';
+import { useI18n } from '@/lib/useI18n';
+import { createClient } from '@/lib/supabase/client';
 import { UserPlusIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+type Patient = {
+  id: string;
+  full_name: string;
+  email: string | null;
+  status: string;
+}
 
-export default async function PatientsPage() {
-  const t = await getDictionary(); // `await` é opcional aqui se a função for síncrona, mas é bom manter
-  const supabase = createSupabaseServerClient();
+export default function PatientsPage() {
+  const { t } = useI18n();
+  const supabase = createClient();
   
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  const { data: patients, error } = await supabase
-    .from('patients')
-    .select('id, full_name, email, status')
-    .eq('user_id', session?.user.id)
-    .order('full_name', { ascending: true });
+  const [patients, setPatients] = useState<Patient[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchPatients = async () => {
+      // Usar getUser em vez de getSession para seguir a recomendação de segurança do Supabase
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data, error: fetchError } = await supabase
+          .from('patients')
+          .select('id, full_name, email, status')
+          .eq('user_id', user.id)
+          .order('full_name', { ascending: true });
+        
+        if (fetchError) {
+          console.error("Erro ao buscar pacientes:", fetchError);
+          setError(t.patients.error_loading);
+        } else {
+          setPatients(data);
+        }
+      } else {
+        setError("Sessão não encontrada. Por favor, faça login novamente.");
+      }
+      setIsLoading(false);
+    };
+
+    if (t.patients.error_loading) {
+      fetchPatients();
+    }
+  }, [supabase, t.patients.error_loading]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <svg className="animate-spin h-8 w-8 text-[var(--color-primary)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p className="ml-4 text-neutral-600">{t.patients.loading || 'Carregando pacientes...'}</p>
+      </div>
+    );
+  }
+  
   if (error) {
-    console.error('Erro ao buscar pacientes:', error);
-    return <p className="text-center text-red-500 py-8">{t.patients.error_loading}</p>;
+    return <p className="text-center text-red-500 py-8">{error}</p>;
   }
 
-  // O resto do código é o mesmo que eu forneci antes, usando o objeto `t`.
   return (
     <div className="mx-auto max-w-4xl">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -32,7 +75,15 @@ export default async function PatientsPage() {
           <h1 className="text-2xl font-semibold text-neutral-900">{t.patients.title}</h1>
           <p className="mt-1 text-neutral-600">{t.patients.subtitle}</p>
         </div>
-        <div className="mt-4 sm:mt-0">
+        
+        {/* Bloco de Ações ATUALIZADO com o botão "Importar" */}
+        <div className="mt-4 flex items-center gap-x-3 sm:mt-0">
+          <Link 
+            href="/app/import" 
+            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            {t.patients.import_button} 
+          </Link>
           <Link 
             href="/app/patients/new" 
             className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-action)] px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:opacity-90"
@@ -44,7 +95,6 @@ export default async function PatientsPage() {
       </div>
 
       <div className="mt-8 flow-root">
-        {/* ... (código completo da tabela usando o objeto `t`) ... */}
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
@@ -54,9 +104,7 @@ export default async function PatientsPage() {
                     <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-neutral-900 sm:pl-6">{t.patients.table_header_name}</th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-neutral-900">{t.patients.table_header_email}</th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-neutral-900">{t.patients.table_header_status}</th>
-                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                      <span className="sr-only">{t.patients.table_action_view}</span>
-                    </th>
+                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6"><span className="sr-only">{t.patients.table_action_view}</span></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-200 bg-white">

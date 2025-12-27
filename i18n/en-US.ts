@@ -140,6 +140,7 @@ const enUS = {
     history_title: "Session History",
     view_edit_note_link: "View/Edit Note",
     empty_state_title: "No clinical notes found",
+    loading: "Loading patients...",
     empty_state_subtitle: "Click 'Add New Note' to create this patient's first session."
   },
   noteDetail: {
@@ -180,7 +181,18 @@ const enUS = {
     cancel_button: "Cancel",
     save_button: "Save Changes",
     saving_button: "Saving..."
-  }
+  },
+    dashboard: {
+    title: "Dashboard",
+    subtitle: "Your daily overview.",
+    today_schedule: "Today's Schedule",
+    no_appointments: "You have no appointments today.",
+    status_scheduled: "Scheduled",
+    pending_payments: "Pending Payments",
+    no_pending_payments: "No pending payments. Great job!",
+    charge: "Generate Invoice",
+  },
+
 };
 
 export default enUS;
