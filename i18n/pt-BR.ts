@@ -83,6 +83,7 @@ const ptBR = {
     title: "Crie sua conta grátis",
     subtitle: "Comece seu teste de 7 dias. Não pedimos cartão de crédito.",
     email_label: "Email",
+    name_label: "Nome Completo",
     password_label: "Senha",
     cta_button: "Criar minha conta grátis",
     terms_prefix: "Ao continuar, você concorda com nossos",
@@ -193,7 +194,48 @@ const ptBR = {
     no_pending_payments: "Nenhum pagamento pendente. Ótimo trabalho!",
     charge: "Gerar Cobrança",
   },
+  settings: {
+    title: "Configurações",
+    subtitle: "Gerencie suas informações e assinatura.",
+    profile_title: "Seu Perfil",
+    name_label: "Nome Completo",
+    license_label: "Nº de Licença (CRP, etc.)",
+    save_button: "Salvar Alterações",
+    saving_button: "Salvando...",
+    success_message: "Perfil atualizado!",
+    subscription_title: "Sua Assinatura",
+    plan_name: "Plano Solo",
+    status_label: "Status",
+    manage_subscription_button: "Gerenciar Assinatura",
+    loading_portal_button: "Carregando...",
+  },
 
+  navigation: {
+    dashboard: "Dashboard",
+    patients: "Pacientes",
+    settings: "Configurações",
+    sign_out: "Sair"
+  },
+    login: {
+    title: "Acesse sua conta",
+    subtitle: "Bem-vindo(a) de volta!",
+    email_label: "Email",
+    password_label: "Senha",
+    cta_button: "Entrar",
+    loading_button: "Entrando...",
+    signup_prompt: "Não tem uma conta?",
+    signup_link: "Cadastre-se",
+    forgot_password_link: "Esqueceu sua senha?",
+  },
+  forgotPassword: {
+    title: "Redefinir sua senha",
+    subtitle: "Digite seu e-mail e enviaremos um link para você voltar a acessar sua conta.",
+    email_label: "Email",
+    cta_button: "Enviar link de redefinição",
+    loading_button: "Enviando...",
+    success_message: "Se um usuário com este e-mail existir, um link de redefinição foi enviado.",
+    back_to_login: "Voltar para o login",
+  },
 };
 
 export default ptBR;

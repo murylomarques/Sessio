@@ -83,6 +83,7 @@ const enUS = {
     title: "Create your free account",
     subtitle: "Start your 7-day trial. No credit card required.",
     email_label: "Email",
+    name_label: "Full Name",
     password_label: "Password",
     cta_button: "Create my free account",
     terms_prefix: "By continuing, you agree to our",
@@ -130,6 +131,7 @@ const enUS = {
     status_archived: "Archived",
     empty_state_title: "No patients found",
     empty_state_subtitle: "How about adding the first one?",
+    import_button: "Import", 
     error_loading: "An error occurred while loading patients. Please try again later."
   },
   patientDetail: {
@@ -191,6 +193,47 @@ const enUS = {
     pending_payments: "Pending Payments",
     no_pending_payments: "No pending payments. Great job!",
     charge: "Generate Invoice",
+  },
+  settings: {
+    title: "Settings",
+    subtitle: "Manage your account information and subscription.",
+    profile_title: "Your Profile",
+    name_label: "Full Name",
+    license_label: "License Number (e.g., LPC)",
+    save_button: "Save Changes",
+    saving_button: "Saving...",
+    success_message: "Profile updated!",
+    subscription_title: "Your Subscription",
+    plan_name: "Solo Plan",
+    status_label: "Status",
+    manage_subscription_button: "Manage Subscription",
+    loading_portal_button: "Loading...",
+  },
+  navigation: {
+    dashboard: "Dashboard",
+    patients: "Patients",
+    settings: "Settings",
+    sign_out: "Sign Out"
+  },
+  login: {
+    title: "Sign in to your account",
+    subtitle: "Welcome back!",
+    email_label: "Email",
+    password_label: "Password",
+    cta_button: "Sign In",
+    loading_button: "Signing in...",
+    signup_prompt: "Don't have an account?",
+    signup_link: "Sign up",
+    forgot_password_link: "Forgot your password?",
+  },
+  forgotPassword: {
+    title: "Reset your password",
+    subtitle: "Enter your email and we'll send you a link to get back into your account.",
+    email_label: "Email",
+    cta_button: "Send reset link",
+    loading_button: "Sending...",
+    success_message: "If a user with this email exists, a reset link has been sent.",
+    back_to_login: "Back to login",
   },
 
 };

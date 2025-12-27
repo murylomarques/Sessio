@@ -12,26 +12,21 @@ export default function AuthListener() {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      // REGRA DE REDIRECIONAMENTO PÓS-LOGIN:
-      // Quando o Supabase detecta um login (isso acontece após a troca do código do e-mail)...
+      
+      // REDIRECIONA PÓS-LOGIN NORMAL
       if (event === 'SIGNED_IN' && session) {
-        // Redireciona o usuário para a área protegida da aplicação.
-        router.push('/app/onboarding');
+        router.push('/app/onboarding'); // área protegida do app
       }
 
-      // REGRA DE REDIRECIONAMENTO PÓS-LOGOUT:
-      // Quando o usuário faz logout...
+      // REDIRECIONA PÓS-LOGOUT
       if (event === 'SIGNED_OUT') {
-        // Redireciona para a página de login.
-        router.push('/login');
+        router.push('/login'); // página de login
       }
     });
 
-    // Limpa a inscrição quando o componente é desmontado.
-    return () => {
-      subscription.unsubscribe();
-    };
+    // Limpa a inscrição quando o componente é desmontado
+    return () => subscription.unsubscribe();
   }, [supabase, router]);
 
-  return null; // Este componente não renderiza nada.
+  return null; // componente invisível
 }

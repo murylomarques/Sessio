@@ -1,62 +1,137 @@
-// /app/app/settings/SettingsForm.tsx
 "use client";
-import { useI18n } from '@/lib/useI18n';
-import { useFormState, useFormStatus } from 'react-dom';
-import { updateProfile, createStripePortalLink } from '@/app/_actions';
-import { useEffect } from 'react';
 
-const initialProfileState = { success: false, error: null, message: '' };
+import { useEffect, useState } from "react";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import { useI18n } from "@/lib/useI18n";
+import { updateProfile, createStripePortalLink } from "@/app/_actions";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
-function SubmitProfileButton() { /* ... */ }
+const initialProfileState = {
+  success: false,
+  error: null,
+  message: "",
+};
+
+function SubmitProfileButton() {
+  const { pending } = useFormStatus();
+  const { t } = useI18n();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="rounded-md bg-black px-4 py-2 text-white disabled:opacity-50"
+    >
+      {pending ? t.settings.saving_button : t.settings.save_button}
+    </button>
+  );
+}
+
 function PortalButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
-  return <button type="submit" disabled={disabled || pending}>{pending ? "Carregando..." : "Gerenciar Assinatura"}</button>;
+  const { t } = useI18n();
+
+  return (
+    <button
+      type="submit"
+      disabled={disabled || pending}
+      className="rounded-md border px-4 py-2 disabled:opacity-50"
+    >
+      {pending
+        ? t.settings.loading_portal_button
+        : t.settings.manage_subscription_button}
+    </button>
+  );
 }
 
 export default function SettingsForm({ profile }: { profile: any }) {
   const { t } = useI18n();
-  const [profileState, profileAction] = useFormState(updateProfile, initialProfileState);
-  
+
+  const [profileState, profileAction] = useActionState(
+    updateProfile,
+    initialProfileState
+  );
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
   useEffect(() => {
-    if (profileState.message) {
-      alert(profileState.message); // Feedback simples para o usuário
+    if (profileState.success) {
+      setShowSuccess(true);
+      const timer = setTimeout(() => setShowSuccess(false), 3000);
+      return () => clearTimeout(timer);
     }
   }, [profileState]);
 
   return (
     <div className="mx-auto max-w-2xl space-y-12">
       <div>
-        <h1 className="text-2xl font-semibold text-neutral-900">Configurações</h1>
-        <p className="mt-1 text-neutral-600">Gerencie suas informações e assinatura.</p>
+        <h1 className="text-2xl font-semibold">{t.settings.title}</h1>
+        <p className="text-neutral-600">{t.settings.subtitle}</p>
       </div>
 
-      {/* Formulário de Perfil */}
-      <form action={profileAction} className="space-y-6 rounded-lg bg-white p-8 shadow-sm border">
-        <h2 className="text-lg font-semibold">Seu Perfil</h2>
+      {/* PERFIL */}
+      <form
+        action={profileAction}
+        className="space-y-6 rounded-lg bg-white p-8 shadow border"
+      >
+        <h2 className="text-lg font-semibold">
+          {t.settings.profile_title}
+        </h2>
+
         <div>
-          <label htmlFor="fullName">Nome Completo</label>
-          <input id="fullName" name="fullName" type="text" defaultValue={profile.full_name} required />
+          <label>{t.settings.name_label}</label>
+          <input
+            name="fullName"
+            defaultValue={profile.full_name}
+            className="w-full rounded border px-3 py-2"
+          />
         </div>
+
         <div>
-          <label htmlFor="licenseNumber">Nº de Licença (CRP, etc.)</label>
-          <input id="licenseNumber" name="licenseNumber" type="text" defaultValue={profile.license_number || ''} />
+          <label>{t.settings.license_label}</label>
+          <input
+            name="licenseNumber"
+            defaultValue={profile.license_number || ""}
+            className="w-full rounded border px-3 py-2"
+          />
         </div>
-        <div className="flex justify-end">
+
+        <div className="flex justify-end items-center gap-4">
+          {showSuccess && (
+            <span className="flex items-center gap-1 text-green-600 text-sm">
+              <CheckCircleIcon className="h-4 w-4" />
+              {profileState.message}
+            </span>
+          )}
           <SubmitProfileButton />
         </div>
+
+        {profileState.error && (
+          <p className="text-sm text-red-600 text-right">
+            {profileState.error}
+          </p>
+        )}
       </form>
 
-      {/* Seção de Assinatura */}
-      <div className="space-y-4 rounded-lg bg-white p-8 shadow-sm border">
-        <h2 className="text-lg font-semibold">Sua Assinatura</h2>
+      {/* ASSINATURA */}
+      <div className="rounded-lg bg-white p-8 shadow space-y-4">
+        <h2 className="text-lg font-semibold">
+          {t.settings.subscription_title}
+        </h2>
+
         <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">Plano Solo</p>
-              <p className="text-sm font-medium text-green-600">Status: {profile.subscription_status || 'trialing'}</p>
-            </div>
-            <form action={createStripePortalLink}>
-                <PortalButton disabled={!profile.stripe_customer_id} />
-            </form>
+          <div>
+            <p className="font-medium">{t.settings.plan_name}</p>
+            <p className="text-sm text-green-600">
+              {t.settings.status_label}:{" "}
+              {profile.subscription_status || "trialing"}
+            </p>
+          </div>
+
+          <form action={createStripePortalLink}>
+            <PortalButton disabled={!profile.stripe_customer_id} />
+          </form>
         </div>
       </div>
     </div>

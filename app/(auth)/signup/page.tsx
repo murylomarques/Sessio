@@ -1,4 +1,4 @@
-// /app/(auth)/signup/page.tsx - VERSÃO FINAL E FUNCIONAL
+// /app/(auth)/signup/page.tsx - VERSÃO FINAL COM CAMPO DE NOME
 
 "use client";
 
@@ -13,36 +13,35 @@ export default function SignupPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  // Estados para gerenciar os inputs, carregamento e erros
+  // Estados para gerenciar todos os campos do formulário
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Justificativa da Função handleSubmit:
-  // 1. Previne o recarregamento da página.
-  // 2. Fornece feedback visual (isLoading) para o usuário, evitando cliques duplos.
-  // 3. Comunica-se com o Supabase para criar o usuário.
-  // 4. Em caso de sucesso, redireciona IMEDIATAMENTE para o onboarding, capitalizando o momentum.
-  // 5. Em caso de erro, exibe uma mensagem clara, reduzindo a frustração.
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setIsLoading(true);
-        setError(null);
+    event.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
-        // Mantenha a confirmação de e-mail LIGADA no Supabase para este código funcionar
-        const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        });
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    });
 
-        if (signUpError) {
-        setError(signUpError.message);
-        setIsLoading(false);
-        } else {
-        // SUCESSO! A conta foi criada, agora redirecione para a página de verificação.
-        router.push("/verify");
-        }
+    if (signUpError) {
+      setError(signUpError.message);
+      setIsLoading(false);
+    } else {
+      // Redireciona para a verificação de e-mail após o sucesso
+      router.push("/verify");
+    }
   };
 
   return (
@@ -60,6 +59,26 @@ export default function SignupPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        {/* Campo de Nome Completo */}
+        <div>
+          <label htmlFor="fullName" className="block text-sm font-medium text-neutral-700">
+            {t.signup.name_label}
+          </label>
+          <div className="mt-1">
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              autoComplete="name"
+              required
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="block w-full appearance-none rounded-md border border-neutral-300 px-3 py-2 placeholder-neutral-400 shadow-sm focus:border-[var(--color-primary)] focus:outline-none focus:ring-[var(--color-primary)] sm:text-sm"
+            />
+          </div>
+        </div>
+        
+        {/* Campo de Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-neutral-700">
             {t.signup.email_label}
@@ -78,6 +97,7 @@ export default function SignupPage() {
           </div>
         </div>
 
+        {/* Campo de Senha */}
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-neutral-700">
             {t.signup.password_label}
@@ -96,8 +116,6 @@ export default function SignupPage() {
           </div>
         </div>
         
-        {/* Justificativa do Feedback de Erro: Exibir o erro logo acima do botão
-            mantém a mensagem no contexto da ação que falhou. É crucial para a usabilidade. */}
         {error && (
           <p className="text-sm text-center text-red-600">{error}</p>
         )}
@@ -108,10 +126,7 @@ export default function SignupPage() {
             disabled={isLoading}
             className="flex w-full justify-center rounded-lg bg-[var(--color-action)] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {/* Justificativa do Estado de Carregamento: Mudar o texto do botão
-                informa ao usuário que o sistema está trabalhando. É um microfeedback
-                essencial para evitar a percepção de que a página travou. */}
-            {isLoading ? 'Criando conta...' : t.signup.cta_button}
+            {isLoading ? t.signup.loading_button : t.signup.cta_button}
           </button>
         </div>
       </form>
