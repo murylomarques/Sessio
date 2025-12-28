@@ -208,7 +208,17 @@ const enUS = {
     status_label: "Status",
     manage_subscription_button: "Manage Subscription",
     loading_portal_button: "Loading...",
+
+    // 🆕 password section
+    change_password: "Change password",
+    show_change_password_form: "Change your password",
+    new_password: "New password",
+    confirm_password: "Confirm new password",
+    change_password_button: "Save new password",
+    passwords_do_not_match: "Passwords do not match",
+    password_updated_success: "Password updated successfully!",
   },
+
   navigation: {
     dashboard: "Dashboard",
     patients: "Patients",

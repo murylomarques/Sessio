@@ -208,6 +208,15 @@ const ptBR = {
     status_label: "Status",
     manage_subscription_button: "Gerenciar Assinatura",
     loading_portal_button: "Carregando...",
+
+    // 🆕 password texts
+    change_password: "Trocar senha",
+    show_change_password_form: "Alterar minha senha",
+    new_password: "Nova senha",
+    confirm_password: "Confirmar nova senha",
+    change_password_button: "Salvar nova senha",
+    passwords_do_not_match: "As senhas não coincidem",
+    password_updated_success: "Senha atualizada com sucesso!",
   },
 
   navigation: {

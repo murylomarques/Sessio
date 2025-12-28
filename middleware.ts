@@ -71,12 +71,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Corresponde a todos os caminhos de solicitação, exceto para os seguintes:
-     * - _next/static (arquivos estáticos)
-     * - _next/image (arquivos de otimização de imagem)
-     * - favicon.ico (arquivo de favicon)
-     * Isso evita que o middleware seja executado em requisições de assets, otimizando a performance.
+     * Ignora rotas que NÃO devem passar pelo middleware
      */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/stripe/webhook).*)',
   ],
 }
