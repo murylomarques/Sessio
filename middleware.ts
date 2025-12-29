@@ -1,17 +1,16 @@
-// /middleware.ts - VERSÃO FINAL DE PRODUÇÃO
+// /middleware.ts - VERSÃO FINAL COM LÓGICA DE PAYWALL
 
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { checkActiveSubscription } from '@/lib/supabase/server';
 
 export async function middleware(request: NextRequest) {
-  // Cria uma resposta inicial. A lógica abaixo irá atualizá-la se necessário.
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
-  })
+  });
 
-  // Cria um cliente Supabase que funciona no lado do servidor (Server Components, Route Handlers, Middleware).
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -23,56 +22,65 @@ export async function middleware(request: NextRequest) {
         set(name: string, value: string, options: CookieOptions) {
           request.cookies.set({ name, value, ...options })
           response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
+            request: { headers: request.headers },
           })
           response.cookies.set({ name, value, ...options })
         },
         remove(name: string, options: CookieOptions) {
           request.cookies.set({ name, value: '', ...options })
           response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
+            request: { headers: request.headers },
           })
           response.cookies.set({ name, value: '', ...options })
         },
       },
     }
-  )
+  );
 
-  // Obtém a sessão do usuário. Esta função também atualiza o cookie de sessão se ele estiver expirado.
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
+  const { data: { session } } = await supabase.auth.getSession();
   const { pathname } = request.nextUrl;
 
-  // REGRA DE PROTEÇÃO: Se não há sessão E o usuário tenta acessar uma rota protegida...
-  if (!session && pathname.startsWith('/app')) {
-    // Redireciona o usuário para a página de login.
-    const url = new URL('/login', request.url);
-    url.searchParams.set('redirectedFrom', pathname); // Opcional: para redirecionar de volta após o login
-    return NextResponse.redirect(url);
+  const authRoutes = ['/login', '/signup', '/forgot-password', '/update-password'];
+
+  // REGRA DE CONVENIÊNCIA: Se o usuário está logado, não pode acessar as páginas de auth.
+  if (session && authRoutes.some(route => pathname.startsWith(route))) {
+    return NextResponse.redirect(new URL('/app/dashboard', request.url));
   }
 
-  // REGRA DE CONVENIÊNCIA: Se há sessão E o usuário tenta acessar uma rota de autenticação...
-  if (session && (pathname.startsWith('/login') || pathname.startsWith('/signup'))) {
-    // Redireciona o usuário para a área principal da aplicação.
-    return NextResponse.redirect(new URL('/app/onboarding', request.url));
+  // REGRA DE PROTEÇÃO E PAYWALL PARA A APLICAÇÃO
+  if (pathname.startsWith('/app')) {
+    // 1. Se não há sessão, redireciona para o login.
+    if (!session) {
+      const url = new URL('/login', request.url);
+      url.searchParams.set('redirectedFrom', pathname);
+      return NextResponse.redirect(url);
+    }
+
+    // 2. PAYWALL: Se há sessão, verifica se a assinatura está ativa.
+    const hasActiveSubscription = await checkActiveSubscription();
+
+    // Se NÃO há assinatura ativa E o usuário NÃO está tentando acessar a página de configurações...
+    if (!hasActiveSubscription && pathname !== '/app/settings') {
+      // ...força o redirecionamento para a página de configurações para que ele possa pagar.
+      const url = new URL('/app/settings', request.url);
+      url.searchParams.set('reason', 'subscription_required');
+      return NextResponse.redirect(url);
+    }
   }
 
-  // Se nenhuma das regras acima for atendida, permite que a requisição continue normalmente.
-  return response
+  return response;
 }
 
-// Configuração para definir quais rotas o middleware deve observar.
+// Configuração do matcher para definir onde o middleware atua.
 export const config = {
   matcher: [
     /*
-     * Ignora rotas que NÃO devem passar pelo middleware
+     * Corresponde a todos os caminhos de requisição, exceto para os seguintes:
+     * - api (rotas de API, como o webhook do Stripe)
+     * - _next/static (arquivos estáticos)
+     * - _next/image (arquivos de otimização de imagem)
+     * - favicon.ico (arquivo de favicon)
      */
-    '/((?!_next/static|_next/image|favicon.ico|api/stripe/webhook).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
-}
+};

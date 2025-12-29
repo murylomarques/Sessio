@@ -195,29 +195,45 @@ const enUS = {
     charge: "Generate Invoice",
   },
   settings: {
-    title: "Settings",
-    subtitle: "Manage your account information and subscription.",
-    profile_title: "Your Profile",
-    name_label: "Full Name",
-    license_label: "License Number (e.g., LPC)",
-    save_button: "Save Changes",
-    saving_button: "Saving...",
-    success_message: "Profile updated!",
-    subscription_title: "Your Subscription",
-    plan_name: "Solo Plan",
-    status_label: "Status",
-    manage_subscription_button: "Manage Subscription",
-    loading_portal_button: "Loading...",
+  title: "Settings",
+  subtitle: "Manage your account information and subscription.",
 
-    // 🆕 password section
-    change_password: "Change password",
-    show_change_password_form: "Change your password",
-    new_password: "New password",
-    confirm_password: "Confirm new password",
-    change_password_button: "Save new password",
-    passwords_do_not_match: "Passwords do not match",
-    password_updated_success: "Password updated successfully!",
-  },
+  // Profile
+  profile_title: "Your Profile",
+  name_label: "Full Name",
+  license_label: "License Number (e.g., LPC)",
+  save_button: "Save Changes",
+  saving_button: "Saving...",
+  success_message: "Profile updated!",
+
+  // Subscription
+  subscription_title: "Your Subscription",
+  plan_label: "Plan",
+  plan_name: "Solo Plan",
+  status_label: "Status",
+  status_active: "Active",
+  next_billing_date_label: "Next billing date",
+  manage_subscription_button: "Manage Subscription",
+  loading_portal_button: "Loading...",
+  portal_description:
+    "You can manage your subscription, payment method, or cancel anytime through the customer portal.",
+
+  // Trial
+  trial_title: "You are currently on a trial",
+  trial_description:
+    "Upgrade to the Solo Plan to continue using Sessio after your trial ends.",
+  upgrade_button: "Upgrade Now",
+
+  // Password
+  change_password: "Change password",
+  show_change_password_form: "Change your password",
+  new_password: "New password",
+  confirm_password: "Confirm new password",
+  change_password_button: "Save new password",
+  passwords_do_not_match: "Passwords do not match",
+  password_updated_success: "Password updated successfully!",
+},
+
 
   navigation: {
     dashboard: "Dashboard",

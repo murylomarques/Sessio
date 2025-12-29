@@ -6,7 +6,7 @@ import { useI18n } from "@/lib/useI18n";
 import { updateProfile, createStripePortalLink, createCheckoutSession } from "@/app/_actions";
 import { createBrowserClient } from "@supabase/ssr";
 
-// Cria o supabase client no frontend
+// Supabase client
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -60,6 +60,7 @@ export default function SettingsForm({
       {/* PERFIL */}
       <form action={updateProfile} className="space-y-6 rounded-lg bg-white p-8 shadow border">
         <h2 className="text-lg font-semibold">{t.settings.profile_title}</h2>
+
         <div>
           <label>{t.settings.name_label}</label>
           <input
@@ -78,7 +79,7 @@ export default function SettingsForm({
           />
         </div>
 
-        <div className="flex justify-end items-center gap-4">
+        <div className="flex justify-end">
           <button
             type="submit"
             disabled={pending}
@@ -89,7 +90,7 @@ export default function SettingsForm({
         </div>
       </form>
 
-      {/* TROCAR SENHA */}
+      {/* ALTERAR SENHA */}
       <div className="rounded-lg bg-white p-8 shadow space-y-4">
         <h2 className="text-lg font-semibold">{t.settings.change_password}</h2>
 
@@ -105,7 +106,9 @@ export default function SettingsForm({
         {showPasswordForm && (
           <form onSubmit={handleUpdatePassword} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium">{t.settings.new_password}</label>
+              <label className="block text-sm font-medium">
+                {t.settings.new_password}
+              </label>
               <input
                 type="password"
                 value={password}
@@ -116,7 +119,9 @@ export default function SettingsForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium">{t.settings.confirm_password}</label>
+              <label className="block text-sm font-medium">
+                {t.settings.confirm_password}
+              </label>
               <input
                 type="password"
                 value={confirmPassword}
@@ -126,17 +131,10 @@ export default function SettingsForm({
               />
             </div>
 
-            {passwordError && (
-              <p className="text-sm text-red-600">{passwordError}</p>
-            )}
-            {passwordSuccess && (
-              <p className="text-sm text-green-600">{passwordSuccess}</p>
-            )}
+            {passwordError && <p className="text-sm text-red-600">{passwordError}</p>}
+            {passwordSuccess && <p className="text-sm text-green-600">{passwordSuccess}</p>}
 
-            <button
-              type="submit"
-              className="rounded-md bg-black px-4 py-2 text-white"
-            >
+            <button type="submit" className="rounded-md bg-black px-4 py-2 text-white">
               {t.settings.change_password_button}
             </button>
           </form>
@@ -148,44 +146,73 @@ export default function SettingsForm({
         <h2 className="text-lg font-semibold">{t.settings.subscription_title}</h2>
 
         {profile.subscription_status === "active" ? (
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">{t.settings.plan_name}</p>
-              <p className="text-sm font-medium text-green-600">
-                {t.settings.status_label}: Ativo
-              </p>
+          <div>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <dt className="font-medium text-neutral-600">
+                  {t.settings.plan_label}
+                </dt>
+                <dd className="mt-1 text-neutral-900">
+                  {t.settings.plan_name}
+                </dd>
+              </div>
+
+              <div>
+                <dt className="font-medium text-neutral-600">
+                  {t.settings.status_label}
+                </dt>
+                <dd className="mt-1 font-semibold text-green-600">
+                  {t.settings.status_active}
+                </dd>
+              </div>
+
+              <div>
+                <dt className="font-medium text-neutral-600">
+                  {t.settings.next_billing_date_label}
+                </dt>
+                <dd className="mt-1 text-neutral-900">
+                  {profile.subscription_end_date
+                    ? new Date(profile.subscription_end_date).toLocaleDateString("pt-BR")
+                    : "N/A"}
+                </dd>
+              </div>
             </div>
-            <form action={createStripePortalLink}>
-              <button
-                type="submit"
-                disabled={!profile.stripe_customer_id}
-                className="rounded-md border px-4 py-2 disabled:opacity-50"
-              >
-                {t.settings.manage_subscription_button}
-              </button>
-            </form>
+
+            <div className="mt-6 border-t pt-6">
+              <p className="text-sm text-neutral-600 mb-4">
+                {t.settings.portal_description}
+              </p>
+
+              <form action={createStripePortalLink}>
+                <button
+                  type="submit"
+                  disabled={!profile.stripe_customer_id}
+                  className="rounded-md border px-4 py-2 disabled:opacity-50"
+                >
+                  {t.settings.manage_subscription_button}
+                </button>
+              </form>
+            </div>
           </div>
         ) : (
           <div className="rounded-md bg-blue-50 p-4">
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-800">
-                Você está em um período de teste
-              </h3>
-              <div className="mt-2 text-sm text-blue-700">
-                <p>
-                  Faça o upgrade para o Plano Solo para continuar usando o Sessio após o término do seu teste.
-                </p>
-              </div>
-              <div className="mt-4">
-                <form action={createCheckoutSession}>
-                  <button
-                    type="submit"
-                    className="rounded-lg bg-[var(--color-action)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
-                  >
-                    Fazer Upgrade Agora
-                  </button>
-                </form>
-              </div>
+            <h3 className="text-sm font-medium text-blue-800">
+              Você está em um período de teste
+            </h3>
+
+            <p className="mt-2 text-sm text-blue-700">
+              Faça o upgrade para o Plano Solo para continuar usando o Sessio após o término do seu teste.
+            </p>
+
+            <div className="mt-4">
+              <form action={createCheckoutSession}>
+                <button
+                  type="submit"
+                  className="rounded-lg bg-[var(--color-action)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                >
+                  Fazer Upgrade Agora
+                </button>
+              </form>
             </div>
           </div>
         )}

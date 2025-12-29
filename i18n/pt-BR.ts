@@ -195,29 +195,45 @@ const ptBR = {
     charge: "Gerar Cobrança",
   },
   settings: {
-    title: "Configurações",
-    subtitle: "Gerencie suas informações e assinatura.",
-    profile_title: "Seu Perfil",
-    name_label: "Nome Completo",
-    license_label: "Nº de Licença (CRP, etc.)",
-    save_button: "Salvar Alterações",
-    saving_button: "Salvando...",
-    success_message: "Perfil atualizado!",
-    subscription_title: "Sua Assinatura",
-    plan_name: "Plano Solo",
-    status_label: "Status",
-    manage_subscription_button: "Gerenciar Assinatura",
-    loading_portal_button: "Carregando...",
+  title: "Configurações",
+  subtitle: "Gerencie suas informações e assinatura.",
 
-    // 🆕 password texts
-    change_password: "Trocar senha",
-    show_change_password_form: "Alterar minha senha",
-    new_password: "Nova senha",
-    confirm_password: "Confirmar nova senha",
-    change_password_button: "Salvar nova senha",
-    passwords_do_not_match: "As senhas não coincidem",
-    password_updated_success: "Senha atualizada com sucesso!",
-  },
+  // Perfil
+  profile_title: "Seu Perfil",
+  name_label: "Nome Completo",
+  license_label: "Nº de Licença (CRP, etc.)",
+  save_button: "Salvar Alterações",
+  saving_button: "Salvando...",
+  success_message: "Perfil atualizado!",
+
+  // Assinatura
+  subscription_title: "Sua Assinatura",
+  plan_label: "Plano",
+  plan_name: "Plano Solo",
+  status_label: "Status",
+  status_active: "Ativo",
+  next_billing_date_label: "Próxima cobrança",
+  manage_subscription_button: "Gerenciar Assinatura",
+  loading_portal_button: "Carregando...",
+  portal_description:
+    "Você pode gerenciar sua assinatura, forma de pagamento ou cancelar a qualquer momento.",
+
+  // Período de teste
+  trial_title: "Você está em um período de teste",
+  trial_description:
+    "Faça o upgrade para o Plano Solo para continuar usando o Sessio após o término do seu teste.",
+  upgrade_button: "Fazer upgrade agora",
+
+  // Senha
+  change_password: "Trocar senha",
+  show_change_password_form: "Alterar minha senha",
+  new_password: "Nova senha",
+  confirm_password: "Confirmar nova senha",
+  change_password_button: "Salvar nova senha",
+  passwords_do_not_match: "As senhas não coincidem",
+  password_updated_success: "Senha atualizada com sucesso!",
+},
+
 
   navigation: {
     dashboard: "Dashboard",
