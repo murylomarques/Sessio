@@ -261,7 +261,23 @@ const enUS = {
     success_message: "If a user with this email exists, a reset link has been sent.",
     back_to_login: "Back to login",
   },
-
+  newAppointmentForm: {
+    title: "New Appointment",
+    subtitle: "Fill in the details to schedule a new session for {patientName}.",
+    date_label: "Date",
+    start_time_label: "Start Time",
+    end_time_label: "End Time",
+    cancel_button: "Cancel",
+    save_button: "Save Appointment",
+    saving_button: "Saving..."
+  },
+  calendar: {
+    title: "Calendar",
+    subtitle: "View, schedule, and manage your sessions.",
+    header: "Appointments Calendar",
+    event_click_error: "Patient not associated with this appointment.",
+    date_click_alert: "To create a new appointment, go to a patient's page and click 'Schedule Session'."
+  },
 };
 
 export default enUS;

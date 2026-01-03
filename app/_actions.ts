@@ -322,3 +322,67 @@ export async function createCheckoutSession() {
 
   redirect(session.url);
 }
+export async function autoSaveClinicalNote(data: {
+  noteId: string;
+  patientId: string;
+  content: string;
+}) {
+  const supabase = createSupabaseServerClient();
+
+  const { error } = await supabase
+    .from("clinical_notes")
+    .update({
+      content: data.content,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", data.noteId)
+    .eq("patient_id", data.patientId);
+
+  if (error) {
+    throw new Error("Erro ao salvar nota");
+  }
+
+  return { success: true };
+}
+// /app/_actions.ts (ADICIONAR ESTA FUNÇÃO)
+
+export async function createAppointment(prevState: any, formData: FormData) {
+  const patientId = formData.get('patientId') as string;
+  const date = formData.get('date') as string;
+  const startTime = formData.get('startTime') as string;
+  const endTime = formData.get('endTime') as string;
+
+  if (!patientId || !date || !startTime || !endTime) {
+    return { success: false, error: "Todos os campos são obrigatórios." };
+  }
+
+  // Combina data e hora para criar timestamps ISO válidos
+  const startDateTime = new Date(`${date}T${startTime}:00`);
+  const endDateTime = new Date(`${date}T${endTime}:00`);
+
+  if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
+    return { success: false, error: "Data ou hora inválida." };
+  }
+
+  const supabase = createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) { return { success: false, error: "Usuário não autenticado." }; }
+
+  const { error } = await supabase.from('appointments').insert({
+    user_id: user.id,
+    patient_id: patientId,
+    start_time: startDateTime.toISOString(),
+    end_time: endDateTime.toISOString(),
+    status: 'scheduled',
+    payment_status: 'pending', // Por padrão, todo novo agendamento tem um pagamento pendente
+  });
+
+  if (error) {
+    console.error("Erro ao criar agendamento:", error);
+    return { success: false, error: "Não foi possível salvar o agendamento." };
+  }
+
+  revalidatePath(`/app/patients/${patientId}`);
+  revalidatePath('/app/dashboard'); // Revalida o dashboard para mostrar o novo agendamento
+  return { success: true, error: null };
+}

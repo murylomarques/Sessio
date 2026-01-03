@@ -38,7 +38,7 @@ export default async function SettingsPage() {
     subscription_status: activeSubscription?.status || null,
     subscription_end_date: activeSubscription?.period_end_date || null
   };
-
+ 
   // Passa o usuário e o perfil combinado para o formulário
   return <SettingsForm profile={profileWithSubscription} user={user} />;
 }

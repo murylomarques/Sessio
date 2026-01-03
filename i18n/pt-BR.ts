@@ -261,6 +261,23 @@ const ptBR = {
     success_message: "Se um usuário com este e-mail existir, um link de redefinição foi enviado.",
     back_to_login: "Voltar para o login",
   },
+  newAppointmentForm: {
+    title: "Novo Agendamento",
+    subtitle: "Preencha os detalhes para agendar uma nova sessão para {patientName}.",
+    date_label: "Data",
+    start_time_label: "Hora de Início",
+    end_time_label: "Hora de Fim",
+    cancel_button: "Cancelar",
+    save_button: "Salvar Agendamento",
+    saving_button: "Salvando..."
+  },
+  calendar: {
+    title: "Agenda",
+    subtitle: "Visualize, agende e gerencie suas sessões.",
+    header: "Calendário de atendimentos",
+    event_click_error: "Paciente não associado a este agendamento.",
+    date_click_alert: "Para criar um novo agendamento, vá para a página de um paciente e clique em 'Agendar Sessão'."
+  },
 };
 
 export default ptBR;
