@@ -1,4 +1,4 @@
-// /app/app/settings/page.tsx - CORRIGIDO
+// /app/app/settings/page.tsx - VERSÃO FINAL CORRETA
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
@@ -6,6 +6,7 @@ import SettingsForm from './SettingsForm';
 
 export const dynamic = 'force-dynamic';
 
+// O "export default" já está aqui, na declaração da função.
 export default async function SettingsPage() {
   const supabase = createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -23,7 +24,7 @@ export default async function SettingsPage() {
     .from('subscriptions')
     .select('status, period_end_date')
     .eq('user_id', user.id)
-    .in('status', ['trialing', 'active']) // Busca apenas as ativas ou em teste
+    .in('status', ['trialing', 'active'])
     .order('created_at', { ascending: false })
     .limit(1)
     .single();
@@ -43,5 +44,4 @@ export default async function SettingsPage() {
   return <SettingsForm profile={profileWithSubscription} user={user} />;
 }
 
-
-export default SettingsPage;
+// REMOVA A LINHA "export default SettingsPage;" DAQUI
