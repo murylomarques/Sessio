@@ -7,6 +7,7 @@ import {
   UsersIcon,
   Cog6ToothIcon,
   ArrowLeftStartOnRectangleIcon,
+  CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
 import { useI18n } from "@/lib/useI18n";
 import { createClient } from "@/lib/supabase/client";
@@ -61,7 +62,7 @@ export default function LayoutClient({
         {/* NAV */}
         <nav className="flex-1 px-3 py-4 space-y-1">
           {navItem("/app/dashboard", t.navigation.dashboard, ChartBarIcon)}
-          {navItem("/app/calendar", t.navigation.dashboard, ChartBarIcon)}
+          {navItem("/app/calendar", t.navigation.calendar, CalendarDaysIcon)}
           {navItem("/app/patients", t.navigation.patients, UsersIcon)}
           {navItem("/app/settings", t.navigation.settings, Cog6ToothIcon)}
         </nav>

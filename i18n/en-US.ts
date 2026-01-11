@@ -237,6 +237,7 @@ const enUS = {
 
   navigation: {
     dashboard: "Dashboard",
+    calendar: "Calendar",
     patients: "Patients",
     settings: "Settings",
     sign_out: "Sign Out"

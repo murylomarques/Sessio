@@ -237,6 +237,7 @@ const ptBR = {
 
   navigation: {
     dashboard: "Dashboard",
+    calendar: "Calendário",
     patients: "Pacientes",
     settings: "Configurações",
     sign_out: "Sair"
