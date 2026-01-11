@@ -42,3 +42,6 @@ export default async function SettingsPage() {
   // Passa o usuário e o perfil combinado para o formulário
   return <SettingsForm profile={profileWithSubscription} user={user} />;
 }
+
+
+export default SettingsPage;
