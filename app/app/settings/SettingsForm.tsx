@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useFormStatus } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { useI18n } from "@/lib/useI18n";
 import {
@@ -10,6 +9,7 @@ import {
   createCheckoutSession,
 } from "@/app/_actions";
 import { createBrowserClient } from "@supabase/ssr";
+import SubmitButton from "./SubmitButton"; // Importa o novo componente
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,7 +19,6 @@ const supabase = createBrowserClient(
 export default function SettingsForm({ profile, user }: any) {
   const { t } = useI18n();
   const searchParams = useSearchParams();
-  const { pending } = useFormStatus();
 
   const isSubscriptionRequired =
     searchParams.get("reason") === "subscription_required";
@@ -115,12 +114,8 @@ export default function SettingsForm({ profile, user }: any) {
           </div>
 
           <div className="flex justify-end">
-            <button
-              disabled={pending}
-              className="rounded-lg bg-black px-5 py-2 text-white transition hover:opacity-90 disabled:opacity-50"
-            >
-              {pending ? t.settings.saving_button : t.settings.save_button}
-            </button>
+            {/* O botão antigo foi substituído por este componente */}
+            <SubmitButton />
           </div>
         </form>
       </section>
